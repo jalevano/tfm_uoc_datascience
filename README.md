@@ -283,19 +283,148 @@ Realizar una evaluación comparativa sistemática de técnicas estado del arte p
 ### Estructura de Proyecto
 ```
 tfm-segmentation-benchmark/
-├── src/
-│   ├── models/          # Implementaciones de modelos
-│   ├── evaluation/      # Framework de evaluación
-│   ├── metrics/         # Métricas especializadas
-│   ├── vlm_integration/ # Demo VLM
-│   └── utils/           # Utilidades
-├── data/
-│   ├── raw/             # Imágenes originales
-│   ├── processed/       # Datos procesados
-│   └── annotations/     # Ground truth
-├── experiments/         # Configuraciones y resultados
-├── notebooks/          # Jupyter notebooks para análisis
-├── docs/               # Documentación
-└── README.md
+├── 📁 src/
+│   ├── 📁 models/                    # Implementaciones de modelos
+│   │   ├── 📁 maskdino/             # MaskDINO específico
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py            # Configuración MaskDINO
+│   │   │   ├── model.py             # Wrapper del modelo
+│   │   │   ├── predictor.py         # Predicción específica
+│   │   │   ├── requirements.txt     # Deps específicas MaskDINO
+│   │   │   └── test_maskdino.py     # Tests unitarios
+│   │   ├── 📁 sam2/                 # SAM 2.0 específico
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   ├── model.py
+│   │   │   ├── predictor.py
+│   │   │   ├── requirements.txt
+│   │   │   └── test_sam2.py
+│   │   ├── 📁 bodypix/              # BodyPix específico
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   ├── model.py
+│   │   │   ├── predictor.py
+│   │   │   ├── requirements.txt
+│   │   │   └── test_bodypix.py
+│   │   ├── 📁 yolov8/               # YOLOv8-seg específico
+│   │   │   ├── __init__.py
+│   │   │   ├── config.py
+│   │   │   ├── model.py
+│   │   │   ├── predictor.py
+│   │   │   ├── requirements.txt
+│   │   │   └── test_yolov8.py
+│   │   ├── base_model.py            # Interfaz común
+│   │   └── model_factory.py         # Factory pattern
+│   ├── 📁 evaluation/               # Framework de evaluación
+│   │   ├── __init__.py
+│   │   ├── evaluator.py            # Evaluador principal
+│   │   ├── benchmark.py            # Sistema de benchmark
+│   │   ├── comparator.py           # Comparación entre modelos
+│   │   └── reporters.py            # Generación de reportes
+│   ├── 📁 metrics/                  # Métricas especializadas
+│   │   ├── __init__.py
+│   │   ├── segmentation_metrics.py # IoU, Dice, etc.
+│   │   ├── photography_metrics.py  # Métricas para fotografía
+│   │   ├── edge_quality.py         # Calidad de bordes
+│   │   └── human_correlation.py    # Correlación con evaluación humana
+│   ├── 📁 vlm_integration/          # Demo VLM
+│   │   ├── __init__.py
+│   │   ├── llava_integration.py    # Integración LLaVA
+│   │   ├── prompt_engineering.py   # Prompts optimizados
+│   │   ├── recommendation_engine.py # Motor de recomendaciones
+│   │   └── demo_interface.py       # Interface del demo
+│   └── 📁 utils/                    # Utilidades
+│       ├── __init__.py
+│       ├── data_loader.py          # Carga de datos
+│       ├── visualization.py        # Visualización
+│       ├── logger.py               # Sistema de logging
+│       ├── config_manager.py       # Gestión de configuraciones
+│       └── gpu_utils.py            # Utilidades GPU
+├── 📁 configs/                      # Configuraciones centralizadas
+│   ├── 📁 models/                   # Configs por modelo
+│   │   ├── maskdino_config.yaml
+│   │   ├── sam2_config.yaml
+│   │   ├── bodypix_config.yaml
+│   │   └── yolov8_config.yaml
+│   ├── 📁 experiments/              # Configs de experimentos
+│   │   ├── benchmark_full.yaml     # Benchmark completo
+│   │   ├── quick_test.yaml         # Test rápido
+│   │   └── ablation_study.yaml     # Estudios de ablación
+│   └── main_config.yaml            # Configuración principal
+├── 📁 data/
+│   ├── 📁 raw/                      # Imágenes originales
+│   │   ├── 📁 portraits/           # Retratos
+│   │   ├── 📁 outdoor/             # Exteriores
+│   │   ├── 📁 group_photos/        # Fotos grupales
+│   │   └── 📁 challenging/         # Casos difíciles
+│   ├── 📁 processed/                # Datos procesados
+│   │   ├── 📁 resized/             # Imágenes redimensionadas
+│   │   ├── 📁 normalized/          # Normalizadas
+│   │   └── 📁 augmented/           # Data augmentation
+│   ├── 📁 annotations/              # Ground truth
+│   │   ├── 📁 masks/               # Máscaras de segmentación
+│   │   ├── 📁 bboxes/              # Bounding boxes
+│   │   └── metadata.json          # Metadatos de imágenes
+│   └── dataset_info.yaml           # Información del dataset
+├── 📁 experiments/                  # Resultados de experimentos
+│   ├── 📁 maskdino/                # Resultados MaskDINO
+│   │   ├── 📁 2025-06-15_run1/     # Experimento específico
+│   │   └── 📁 2025-06-16_run2/
+│   ├── 📁 sam2/                    # Resultados SAM 2.0
+│   ├── 📁 bodypix/                 # Resultados BodyPix
+│   ├── 📁 yolov8/                  # Resultados YOLOv8
+│   └── 📁 comparative/             # Análisis comparativos
+│       ├── 📁 speed_comparison/
+│       ├── 📁 accuracy_comparison/
+│       └── 📁 final_benchmark/
+├── 📁 notebooks/                    # Jupyter notebooks
+│   ├── 📁 exploration/             # Exploración de datos
+│   │   ├── 01_data_exploration.ipynb
+│   │   └── 02_image_analysis.ipynb
+│   ├── 📁 model_testing/           # Testing de modelos
+│   │   ├── 01_maskdino_test.ipynb
+│   │   ├── 02_sam2_test.ipynb
+│   │   ├── 03_bodypix_test.ipynb
+│   │   └── 04_yolov8_test.ipynb
+│   ├── 📁 evaluation/              # Análisis de resultados
+│   │   ├── 01_metrics_analysis.ipynb
+│   │   ├── 02_comparative_analysis.ipynb
+│   │   └── 03_visualization.ipynb
+│   └── 📁 vlm_demo/               # Demo VLM
+│       └── 01_llava_integration.ipynb
+├── 📁 scripts/                      # Scripts de automatización
+│   ├── setup_models.py            # Setup automático de modelos
+│   ├── run_benchmark.py           # Ejecutar benchmark
+│   ├── download_data.py           # Descargar datasets
+│   ├── process_results.py         # Procesar resultados
+│   └── generate_report.py         # Generar reporte final
+├── 📁 tests/                       # Tests unitarios
+│   ├── 📁 unit/                    # Tests unitarios
+│   ├── 📁 integration/             # Tests de integración
+│   └── 📁 performance/             # Tests de rendimiento
+├── 📁 docs/                        # Documentación
+│   ├── 📁 setup/                   # Guías de instalación
+│   ├── 📁 models/                  # Documentación de modelos
+│   ├── 📁 api/                     # Documentación API
+│   └── methodology.md             # Metodología del TFM
+├── 📁 requirements/                # Gestión de dependencias
+│   ├── base.txt                   # Dependencias base
+│   ├── maskdino.txt              # Específicas MaskDINO
+│   ├── sam2.txt                  # Específicas SAM 2.0
+│   ├── bodypix.txt               # Específicas BodyPix
+│   ├── yolov8.txt                # Específicas YOLOv8
+│   ├── llava.txt                 # Específicas LLaVA
+│   ├── dev.txt                   # Desarrollo
+│   └── gpu.txt                   # GPU/CUDA
+├── 📁 docker/                      # Containerización
+│   ├── Dockerfile.base           # Base image
+│   ├── Dockerfile.maskdino       # MaskDINO specific
+│   ├── Dockerfile.gpu            # GPU version
+│   └── docker-compose.yml        # Orquestación
+├── .gitignore                      # Git ignore
+├── .pre-commit-config.yaml        # Pre-commit hooks
+├── pyproject.toml                 # Configuración del proyecto
+├── setup.py                       # Instalación del paquete
+└── README.md                      # Documentación principal
 ```
 
