@@ -1,6 +1,0 @@
-[submodule "src/models/maskdin"]
-	path = src/models/maskdin
-	url = https://github.com/IDEA-Research/MaskDINO.git
-[submodule "src/models/maskdino/maskdino-repo"]
-	path = src/models/maskdino/maskdino-repo
-	url = https://github.com/IDEA-Research/MaskDINO.git
