@@ -1,0 +1,37 @@
+{
+  "info": {
+    "description": "Mask2Former Evaluation Results",
+    "version": "1.0",
+    "year": 2025,
+    "contributor": "TFM Evaluation Framework",
+    "date_created": "2025-09-27T18:57:59.094006"
+  },
+  "images": [
+    {
+      "id": 1,
+      "file_name": "Aleksandra_Retrato.jpg",
+      "width": 683,
+      "height": 1024
+    },
+    {
+      "id": 2,
+      "file_name": "Anastasiia_Completo.jpg",
+      "width": 683,
+      "height": 1024
+    },
+    {
+      "id": 3,
+      "file_name": "Celia_MedioPlano.jpg",
+      "width": 683,
+      "height": 1024
+    }
+  ],
+  "annotations": [],
+  "categories": [
+    {
+      "id": 1,
+      "name": "person",
+      "supercategory": "person"
+    }
+  ]
+}

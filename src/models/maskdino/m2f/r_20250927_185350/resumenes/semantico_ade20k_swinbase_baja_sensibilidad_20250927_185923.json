@@ -1,0 +1,187 @@
+{
+  "metadatos_resumen": {
+    "timestamp": "2025-09-27T18:59:23.459311",
+    "modelo_evaluado": {
+      "nombre_hf": "facebook/mask2former-swin-base-ade-semantic",
+      "nombre_corto": "swin-base-ade-semantic",
+      "tipo": "semantico",
+      "dataset": "ADE20K",
+      "arquitectura": "Swin-Base",
+      "descripcion": "Segmentación semántica - Balance eficiencia/precisión"
+    },
+    "configuracion_umbrales": {
+      "nombre": "baja_sensibilidad",
+      "valores": [
+        0.3,
+        0.5,
+        0.7
+      ],
+      "descripcion": "Solo detecciones muy confiables"
+    },
+    "total_imagenes": 3,
+    "imagenes_exitosas": 3,
+    "tasa_exito": 1.0,
+    "version_framework": "2.0_avanzado"
+  },
+  "estadisticas_rendimiento": {
+    "tiempo_inferencia": {
+      "promedio_ms": 127.14719772338867,
+      "mediana_ms": 124.35603141784668,
+      "minimo_ms": 122.60723114013672,
+      "maximo_ms": 134.47833061218262,
+      "desviacion_std": 5.232826366805152
+    },
+    "memoria": {
+      "promedio_mb": 1307.35205078125,
+      "maxima_mb": 1307.35205078125,
+      "minima_mb": 1307.35205078125
+    }
+  },
+  "estadisticas_deteccion": {
+    "umbral_0.3": {
+      "total_personas_detectadas": 3,
+      "imagenes_con_personas": 3,
+      "imagenes_sin_personas": 0,
+      "porcentaje_imagenes_con_personas": 100.0,
+      "personas_promedio_por_imagen": 1.0,
+      "score_promedio": 1.0,
+      "score_mediano": 1.0
+    },
+    "umbral_0.5": {
+      "total_personas_detectadas": 1,
+      "imagenes_con_personas": 1,
+      "imagenes_sin_personas": 2,
+      "porcentaje_imagenes_con_personas": 33.33333333333333,
+      "personas_promedio_por_imagen": 0.3333333333333333,
+      "score_promedio": 1.0,
+      "score_mediano": 1.0
+    },
+    "umbral_0.7": {
+      "total_personas_detectadas": 0,
+      "imagenes_con_personas": 0,
+      "imagenes_sin_personas": 3,
+      "porcentaje_imagenes_con_personas": 0.0,
+      "personas_promedio_por_imagen": 0.0,
+      "score_promedio": 1.0,
+      "score_mediano": 1.0
+    }
+  },
+  "estadisticas_caracteristicas_avanzadas": {
+    "haralick_estadisticas": {
+      "count": 3,
+      "mean": 1487.7336856318586,
+      "std": 344.3783937942916,
+      "min": 1008.0276471957544,
+      "max": 1800.4310916237619
+    },
+    "glcm_contrast_estadisticas": {
+      "count": 3,
+      "mean": 54.91454998635709,
+      "std": 27.816324902313617,
+      "min": 25.798670820353493,
+      "max": 92.3814633983984
+    },
+    "corners_estadisticas": {
+      "count": 3,
+      "mean": 3725.0,
+      "std": 86.21291473246144,
+      "min": 3622.0,
+      "max": 3833.0
+    },
+    "zernike_estadisticas": {
+      "count": 3,
+      "mean": 0.0212388678622256,
+      "std": 0.005836458229604125,
+      "min": 0.016301045921654593,
+      "max": 0.029435763020799536
+    },
+    "regiones_estadisticas": {
+      "count": 3,
+      "mean": 96.0,
+      "std": 0.0,
+      "min": 96.0,
+      "max": 96.0
+    },
+    "imagenes_con_caracteristicas": 3
+  },
+  "estadisticas_mascaras_shapely": {
+    "total_mascaras_analizadas": 4,
+    "mascaras_shapely_validas": 4,
+    "tasa_validez_shapely": 1.0,
+    "compactness_estadisticas": {
+      "count": 4,
+      "mean": 0.41030895343163976,
+      "std": 0.10216028021560294,
+      "min": 0.26358156609940825,
+      "max": 0.5058400667888474
+    },
+    "convexity_ratio_estadisticas": {
+      "count": 4,
+      "mean": 0.8760860296547371,
+      "std": 0.07158406803834742,
+      "min": 0.8307631539165503,
+      "max": 1.0
+    },
+    "roughness_estadisticas": {
+      "count": 4,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "vertices_estadisticas": {
+      "count": 4,
+      "mean": 8.75,
+      "std": 1.7853571071357126,
+      "min": 6.0,
+      "max": 11.0
+    }
+  },
+  "distribucion_caracteristicas": {
+    "dimensiones": {
+      "ancho_estadisticas": {
+        "mean": 683.0,
+        "std": 0.0,
+        "min": 683.0,
+        "max": 683.0
+      },
+      "alto_estadisticas": {
+        "mean": 1024.0,
+        "std": 0.0,
+        "min": 1024.0,
+        "max": 1024.0
+      },
+      "megapixeles_estadisticas": {
+        "mean": 0.6999999999999998,
+        "std": 1.1102230246251565e-16,
+        "min": 0.7,
+        "max": 0.7
+      },
+      "aspect_ratio_estadisticas": {
+        "mean": 0.6670000000000001,
+        "std": 1.1102230246251565e-16,
+        "min": 0.667,
+        "max": 0.667
+      }
+    },
+    "iluminacion_color": {
+      "brillo_lab_estadisticas": {
+        "mean": 29.978454658300894,
+        "std": 7.760132515921296,
+        "min": 21.56297614656816,
+        "max": 40.28654440089439
+      },
+      "contraste_rgb_estadisticas": {
+        "mean": 62.89248305758105,
+        "std": 7.860056178818941,
+        "min": 51.82075294517488,
+        "max": 69.2846885483156
+      }
+    },
+    "resumen_dataset": {
+      "imagenes_analizadas": 3,
+      "resolucion_promedio_mp": 0.6999999999999998,
+      "orientacion_predominante": "vertical"
+    }
+  }
+}

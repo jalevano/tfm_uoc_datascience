@@ -1,0 +1,187 @@
+{
+  "metadatos_resumen": {
+    "timestamp": "2025-09-27T18:56:26.588813",
+    "modelo_evaluado": {
+      "nombre_hf": "facebook/mask2former-swin-large-coco-instance",
+      "nombre_corto": "swin-large-coco-instance",
+      "tipo": "instancia",
+      "dataset": "COCO",
+      "arquitectura": "Swin-Large",
+      "descripcion": "Segmentación por instancia - Mayor precisión"
+    },
+    "configuracion_umbrales": {
+      "nombre": "baja_sensibilidad",
+      "valores": [
+        0.3,
+        0.5,
+        0.7
+      ],
+      "descripcion": "Solo detecciones muy confiables"
+    },
+    "total_imagenes": 3,
+    "imagenes_exitosas": 3,
+    "tasa_exito": 1.0,
+    "version_framework": "2.0_avanzado"
+  },
+  "estadisticas_rendimiento": {
+    "tiempo_inferencia": {
+      "promedio_ms": 177.43523915608725,
+      "mediana_ms": 175.08769035339355,
+      "minimo_ms": 174.6978759765625,
+      "maximo_ms": 182.52015113830566,
+      "desviacion_std": 3.59909583203684
+    },
+    "memoria": {
+      "promedio_mb": 893.6982421875,
+      "maxima_mb": 893.6982421875,
+      "minima_mb": 893.6982421875
+    }
+  },
+  "estadisticas_deteccion": {
+    "umbral_0.3": {
+      "total_personas_detectadas": 0,
+      "imagenes_con_personas": 0,
+      "imagenes_sin_personas": 3,
+      "porcentaje_imagenes_con_personas": 0.0,
+      "personas_promedio_por_imagen": 0.0,
+      "score_promedio": 0.0,
+      "score_mediano": 0.0
+    },
+    "umbral_0.5": {
+      "total_personas_detectadas": 0,
+      "imagenes_con_personas": 0,
+      "imagenes_sin_personas": 3,
+      "porcentaje_imagenes_con_personas": 0.0,
+      "personas_promedio_por_imagen": 0.0,
+      "score_promedio": 0.0,
+      "score_mediano": 0.0
+    },
+    "umbral_0.7": {
+      "total_personas_detectadas": 0,
+      "imagenes_con_personas": 0,
+      "imagenes_sin_personas": 3,
+      "porcentaje_imagenes_con_personas": 0.0,
+      "personas_promedio_por_imagen": 0.0,
+      "score_promedio": 0.0,
+      "score_mediano": 0.0
+    }
+  },
+  "estadisticas_caracteristicas_avanzadas": {
+    "haralick_estadisticas": {
+      "count": 3,
+      "mean": 1487.7336856318586,
+      "std": 344.3783937942916,
+      "min": 1008.0276471957544,
+      "max": 1800.4310916237619
+    },
+    "glcm_contrast_estadisticas": {
+      "count": 3,
+      "mean": 54.91454998635709,
+      "std": 27.816324902313617,
+      "min": 25.798670820353493,
+      "max": 92.3814633983984
+    },
+    "corners_estadisticas": {
+      "count": 3,
+      "mean": 3725.0,
+      "std": 86.21291473246144,
+      "min": 3622.0,
+      "max": 3833.0
+    },
+    "zernike_estadisticas": {
+      "count": 3,
+      "mean": 0.0212388678622256,
+      "std": 0.005836458229604125,
+      "min": 0.016301045921654593,
+      "max": 0.029435763020799536
+    },
+    "regiones_estadisticas": {
+      "count": 3,
+      "mean": 96.0,
+      "std": 0.0,
+      "min": 96.0,
+      "max": 96.0
+    },
+    "imagenes_con_caracteristicas": 3
+  },
+  "estadisticas_mascaras_shapely": {
+    "total_mascaras_analizadas": 0,
+    "mascaras_shapely_validas": 0,
+    "tasa_validez_shapely": 0,
+    "compactness_estadisticas": {
+      "count": 0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "convexity_ratio_estadisticas": {
+      "count": 0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "roughness_estadisticas": {
+      "count": 0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    },
+    "vertices_estadisticas": {
+      "count": 0,
+      "mean": 0.0,
+      "std": 0.0,
+      "min": 0.0,
+      "max": 0.0
+    }
+  },
+  "distribucion_caracteristicas": {
+    "dimensiones": {
+      "ancho_estadisticas": {
+        "mean": 683.0,
+        "std": 0.0,
+        "min": 683.0,
+        "max": 683.0
+      },
+      "alto_estadisticas": {
+        "mean": 1024.0,
+        "std": 0.0,
+        "min": 1024.0,
+        "max": 1024.0
+      },
+      "megapixeles_estadisticas": {
+        "mean": 0.6999999999999998,
+        "std": 1.1102230246251565e-16,
+        "min": 0.7,
+        "max": 0.7
+      },
+      "aspect_ratio_estadisticas": {
+        "mean": 0.6670000000000001,
+        "std": 1.1102230246251565e-16,
+        "min": 0.667,
+        "max": 0.667
+      }
+    },
+    "iluminacion_color": {
+      "brillo_lab_estadisticas": {
+        "mean": 29.978454658300894,
+        "std": 7.760132515921296,
+        "min": 21.56297614656816,
+        "max": 40.28654440089439
+      },
+      "contraste_rgb_estadisticas": {
+        "mean": 62.89248305758105,
+        "std": 7.860056178818941,
+        "min": 51.82075294517488,
+        "max": 69.2846885483156
+      }
+    },
+    "resumen_dataset": {
+      "imagenes_analizadas": 3,
+      "resolucion_promedio_mp": 0.6999999999999998,
+      "orientacion_predominante": "vertical"
+    }
+  }
+}
