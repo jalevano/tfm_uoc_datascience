@@ -1,430 +1,233 @@
-# TFM Roadmap: Evaluación Comparativa de Técnicas de Segmentación para Fotografía de Personas con Generación Automática de Recomendaciones vía VLM
+# Evaluación Comparativa de Técnicas de Segmentación para Fotografía de Personas con Generación Automática de Recomendaciones vía VLM
 
-## 🎯 Objetivos del Proyecto
+**Trabajo de Fin de Máster - Máster en Ciencia de Datos**  
+**Universitat Oberta de Catalunya (UOC)**  
+**Diciembre 2025**
 
-### Objetivo General
-Realizar una evaluación comparativa sistemática de técnicas estado del arte para segmentación de personas en diferentes contextos fotográficos y demostrar la viabilidad de generar recomendaciones técnicas automáticas mediante Vision Language Models.
+**Autor:** Jesus Levano.  
+---
 
-### Objetivos Específicos
+## Resumen
 
-1. **OE1:** Implementación de Framework de Evaluación
-2. **OE2:** Desarrollo de Métricas Especializadas
-3. **OE3:** Benchmark Comparativo Completo
-4. **OE4:** Demo de Recomendaciones VLM
+Este trabajo presenta una evaluación comparativa de cinco modelos de segmentación de instancias aplicados a fotografía de retrato profesional: YOLOv8-seg, Mask2Former, OneFormer, SAM 2.0 y BodyPix. La evaluación se realizó íntegramente en Google Colab gratuito, demostrando la viabilidad de investigación rigurosa con recursos accesibles.
 
-## 🗓️ Timeline Detallado
+Se evaluaron 143 configuraciones sobre 20 fotografías de retrato anotadas manualmente, generando 2.860 evaluaciones totales con 2.338 resultados válidos (81.7%). El análisis incluye métricas estándar (IoU, Dice), descriptores geométricos (Shapely), análisis textural (Haralick) y validación estadística (ANOVA, η², d de Cohen).
 
-### Mes 1: Setup + Baseline (Semanas 1-4)
-
-#### Semana 1-2: Setup Técnico e Implementación
-- [ ] **Configuración del entorno de desarrollo**
-  - [ ] Setup GPU computing environment
-  - [ ] Instalación de dependencias principales
-  - [ ] Configuración de repositorio Git
-- [ ] **Implementación de modelos base**
-  - [ ] MaskDINO setup y testing
-  - [ ] SAM 2.0 implementation
-  - [ ] BodyPix integration
-  - [ ] YOLOv8-seg configuration
-- [ ] **Documentación inicial**
-  - [ ] README del proyecto
-  - [ ] Guía de instalación
-  - [ ] Estructura de carpetas
-
-#### Semana 3-4: Pipeline de Evaluación
-- [ ] **Desarrollo del framework de evaluación**
-  - [ ] Pipeline de procesamiento de imágenes
-  - [ ] Sistema de logging y tracking
-  - [ ] Configuración de experimentos
-- [ ] **Primeros benchmarks**
-  - [ ] Tests básicos con dataset pequeño
-  - [ ] Validación del pipeline
-  - [ ] Métricas básicas (IoU, Dice, etc.)
-- [ ] **Preparación de datos**
-  - [ ] Colección y organización de imágenes
-  - [ ] Categorización por contextos fotográficos
-  - [ ] Ground truth inicial
-
-**Entregables Mes 1:**
-- ✅ Pipeline de evaluación funcional
-- ✅ Implementación de los 4 modelos
-- ✅ Framework de testing básico
-- ✅ Dataset inicial categorizado
+Como componente innovador, se implementó un sistema de mentoría fotográfica mediante Vision Language Model (Gemini 2.5 Flash) que analiza metadatos RAW junto con resultados de segmentación para generar recomendaciones técnicas específicas con valores cuantificados.
 
 ---
 
-### Mes 2: Métricas + Validación (Semanas 5-8)
+## Hallazgos Principales
 
-#### Semana 5-6: Desarrollo de Métricas Especializadas
-- [ ] **Análisis de requerimientos específicos**
-  - [ ] Investigación de métricas para fotografía
-  - [ ] Análisis de casos edge en segmentación de personas
-  - [ ] Definición de criterios de calidad
-- [ ] **Implementación de métricas custom**
-  - [ ] Métricas de calidad de bordes
-  - [ ] Evaluación de coherencia espacial
-  - [ ] Métricas sensibles al contexto fotográfico
-- [ ] **Testing y calibración**
-  - [ ] Validación con casos conocidos
-  - [ ] Ajuste de parámetros
-  - [ ] Comparación con métricas estándar
+| Modelo | IoU Medio | Desv. Típica | Tiempo (ms) | Observaciones |
+|--------|-----------|--------------|-------------|---------------|
+| **YOLOv8-seg** | **0.9498** | 0.053 | 80 | Líder en precisión y consistencia |
+| OneFormer | 0.8873 | 0.207 | 168 | Configuraciones semantic óptimas |
+| Mask2Former | 0.7401 | 0.349 | 168 | Solo ADE20K semantic funcional |
+| BodyPix | 0.6559 | 0.174 | Variable | Viable para recursos limitados |
+| SAM2 (Prompts) | 0.4614 | 0.375 | 3,075 | Requiere guía de dominio |
+| SAM2 (Auto) | 0.3077 | 0.357 | 3,075 | Rendimiento insuficiente |
 
-#### Semana 7-8: Validación Humana + Ground Truth
-- [ ] **Diseño de protocolo de evaluación humana**
-  - [ ] Criterios de evaluación para expertos
-  - [ ] Interfaz para anotación
-  - [ ] Protocolo de inter-annotator agreement
-- [ ] **Creación de ground truth**
-  - [ ] Selección de imágenes representativas
-  - [ ] Anotación manual de calidad
-  - [ ] Validación cruzada
-- [ ] **Análisis de correlación**
-  - [ ] Correlación métricas automáticas vs. humanas
-  - [ ] Identificación de discrepancias
-  - [ ] Refinamiento de métricas
-
-**Entregables Mes 2:**
-- ✅ Suite de métricas especializadas validadas
-- ✅ Ground truth dataset anotado
-- ✅ Protocolo de evaluación humana
-- ✅ Análisis de correlación métricas
+**Hallazgo estadístico:** La elección del modelo explica el 40.6% de la varianza en IoU (η² = 0.4057, p < 0.001).
 
 ---
 
-### Mes 3: Benchmark Completo (Semanas 9-12)
-
-#### Semana 9-10: Evaluación Sistemática
-- [ ] **Configuración de experimentos masivos**
-  - [ ] Diseño experimental por categorías
-  - [ ] Configuración de batch processing
-  - [ ] Sistema de monitoreo de experimentos
-- [ ] **Ejecución del benchmark**
-  - [ ] Evaluación por contexto fotográfico:
-    - [ ] Retratos con fondo uniforme
-    - [ ] Fotografía en exteriores
-    - [ ] Condiciones de iluminación difícil
-    - [ ] Múltiples personas
-    - [ ] Poses complejas
-- [ ] **Recolección de datos**
-  - [ ] Métricas de accuracy por modelo
-  - [ ] Tiempo de procesamiento
-  - [ ] Uso de recursos computacionales
-
-#### Semana 11-12: Análisis de Resultados
-- [ ] **Análisis estadístico**
-  - [ ] Comparación de rendimiento por modelo
-  - [ ] Análisis de significancia estadística
-  - [ ] Identificación de fortalezas/debilidades
-- [ ] **Análisis de trade-offs**
-  - [ ] Velocidad vs. Calidad
-  - [ ] Recursos vs. Precisión
-  - [ ] Robustez vs. Especialización
-- [ ] **Documentación de patterns**
-  - [ ] Casos de uso óptimos por modelo
-  - [ ] Recomendaciones de aplicación
-  - [ ] Limitaciones identificadas
-
-**Entregables Mes 3:**
-- ✅ Benchmark completo de los 4 modelos
-- ✅ Análisis estadístico detallado
-- ✅ Documentación de trade-offs
-- ✅ Recomendaciones de uso por contexto
-
----
-
-### Mes 4: Demo VLM Integration (Semanas 13-16)
-
-#### Semana 13-14: Setup VLM APIs
-- [ ] **Investigación y selección de VLMs**
-  - [ ] Evaluación de GPT-4V, Claude, Gemini Pro Vision
-  - [ ] Análisis de capacidades y costos
-  - [ ] Setup de APIs y autenticación
-- [ ] **Prompt Engineering**
-  - [ ] Diseño de prompts para análisis compositivo
-  - [ ] Testing de respuestas VLM
-  - [ ] Optimización de prompts para recomendaciones
-- [ ] **Integración técnica**
-  - [ ] Pipeline de llamadas API
-  - [ ] Manejo de rate limits y errores
-  - [ ] Caching y optimización
-
-#### Semana 15-16: Demo Funcional + Evaluación
-- [ ] **Desarrollo del demo**
-  - [ ] Interface para cargar imágenes
-  - [ ] Visualización de segmentaciones
-  - [ ] Display de recomendaciones VLM
-- [ ] **Testing y refinamiento**
-  - [ ] Testing con casos diversos
-  - [ ] Refinamiento de la experiencia de usuario
-  - [ ] Optimización de rendimiento
-- [ ] **Evaluación de calidad**
-  - [ ] Evaluación humana de recomendaciones
-  - [ ] Análisis de correlación calidad-utilidad
-  - [ ] Métricas de viabilidad técnica
-
-**Entregables Mes 4:**
-- ✅ Demo funcional de VLM integration
-- ✅ Pipeline automatizado de recomendaciones
-- ✅ Evaluación de calidad de recomendaciones
-- ✅ Análisis de viabilidad comercial
-
----
-
-### Mes 5: Documentación TFM (Semanas 17-20)
-
-#### Semana 17-18: Escritura de Memoria
-- [ ] **Estructura de la memoria**
-  - [ ] Introducción y motivación
-  - [ ] Estado del arte y trabajo relacionado
-  - [ ] Metodología y diseño experimental
-  - [ ] Resultados y análisis
-  - [ ] Demo VLM y proof of concept
-  - [ ] Conclusiones y trabajo futuro
-- [ ] **Redacción de secciones**
-  - [ ] Revisión bibliográfica completa
-  - [ ] Descripción detallada de metodología
-  - [ ] Análisis exhaustivo de resultados
-  - [ ] Documentación técnica del demo
-
-#### Semana 19-20: Preparación Final
-- [ ] **Preparación de presentación**
-  - [ ] Slides para defensa (20-30 slides)
-  - [ ] Demo en vivo preparado
-  - [ ] Anticipación de preguntas
-- [ ] **Revisiones finales**
-  - [ ] Revisión completa de la memoria
-  - [ ] Corrección de errores y formato
-  - [ ] Verificación de referencias
-- [ ] **Entrega final**
-  - [ ] Código completo documentado
-  - [ ] Memoria TFM finalizada
-  - [ ] Materiales de presentación
-
-**Entregables Mes 5:**
-- ✅ Memoria TFM completa (80-120 páginas)
-- ✅ Presentación para defensa
-- ✅ Código fuente completo y documentado
-- ✅ Dataset y resultados experimentales
-
-## 🛠️ Stack Tecnológico
-
-### Modelos de Segmentación
-- **MaskDINO:** Para detección y segmentación de instancias
-- **SAM 2.0:** Segment Anything Model v2
-- **BodyPix:** Modelo especializado en segmentación de personas
-- **YOLOv8-seg:** YOLO v8 con capacidades de segmentación
-
-### Vision Language Models
-- **GPT-4V:** Para análisis compositivo avanzado
-- **LLaVa:** Debo valorar esta opción
-
-### Herramientas de Desarrollo
-- **Python 3.8+:** Lenguaje principal
-- **PyTorch:** Framework de deep learning
-- **OpenCV:** Procesamiento de imágenes
-- **Matplotlib/Plotly:** Visualización de resultados
-- **Jupyter Notebooks:** Experimentación y análisis
-- **Git/GitHub:** Control de versiones
-
-## 💰 Presupuesto Estimado
-
-### Recursos Computacionales
-- **GPU Computing:** €400-600 (RTX 4090, 3h/día × 4 meses)
-- **Cloud Storage:** Drive de UOC
-
-### APIs y Servicios
-- **VLM API Calls:** €100-150 (estimado 1000-2000 llamadas)
-
-**Total Estimado:** €600-750
-
-## 📊 Criterios de Éxito
-
-### Técnicos
-- [ ] Pipeline de evaluación reproducible funcionando
-- [ ] Benchmark completo de 4 modelos ejecutado
-- [ ] Métricas especializadas validadas
-- [ ] Demo VLM integration funcional
-
-### Académicos
-- [ ] Análisis comparativo riguroso documentado
-- [ ] Contribución metodológica en métricas
-- [ ] Proof of concept de viabilidad comercial
-- [ ] Memoria TFM de calidad académica
-
-### Impacto
-- [ ] Código open source disponible
-- [ ] Dataset benchmark para la comunidad
-- [ ] Framework replicable para futuras investigaciones
-
-## ⚠️ Riesgos y Mitigaciones
-
-### Riesgos Técnicos
-- **Problemas de compatibilidad entre modelos**
-  - *Mitigación:* Testing temprano y entornos virtuales separados
-- **Limitaciones computacionales**
-  - *Mitigación:* Optimización de batch size y uso de cloud computing si necesario
-- **Calidad de APIs VLM**
-  - *Mitigación:* Testing de múltiples proveedores y fallbacks
-
-### Riesgos de Timeline
-- **Retrasos en implementación**
-  - *Mitigación:* Buffers de tiempo y priorización de objetivos core
-- **Complejidad subestimada**
-  - *Mitigación:* Approach iterativo y scope ajustable
-
-## 📝 Notas de Implementación
-
-### Setup Inicial
-1. Configurar entorno conda con Python 3.8+
-2. Instalar CUDA y drivers GPU
-3. Clonar repositorios de modelos base
-4. Configurar APIs de VLM
-
-### Estructura de Proyecto
+## Estructura del Repositorio
 ```
-tfm-segmentation-benchmark/
-├── 📁 src/
-│   ├── 📁 models/                    # Implementaciones de modelos
-│   │   ├── 📁 maskdino/             # MaskDINO específico
-│   │   │   ├── __init__.py
-│   │   │   ├── config.py            # Configuración MaskDINO
-│   │   │   ├── model.py             # Wrapper del modelo
-│   │   │   ├── predictor.py         # Predicción específica
-│   │   │   ├── requirements.txt     # Deps específicas MaskDINO
-│   │   │   └── test_maskdino.py     # Tests unitarios
-│   │   ├── 📁 sam2/                 # SAM 2.0 específico
-│   │   │   ├── __init__.py
-│   │   │   ├── config.py
-│   │   │   ├── model.py
-│   │   │   ├── predictor.py
-│   │   │   ├── requirements.txt
-│   │   │   └── test_sam2.py
-│   │   ├── 📁 bodypix/              # BodyPix específico
-│   │   │   ├── __init__.py
-│   │   │   ├── config.py
-│   │   │   ├── model.py
-│   │   │   ├── predictor.py
-│   │   │   ├── requirements.txt
-│   │   │   └── test_bodypix.py
-│   │   ├── 📁 yolov8/               # YOLOv8-seg específico
-│   │   │   ├── __init__.py
-│   │   │   ├── config.py
-│   │   │   ├── model.py
-│   │   │   ├── predictor.py
-│   │   │   ├── requirements.txt
-│   │   │   └── test_yolov8.py
-│   │   ├── base_model.py            # Interfaz común
-│   │   └── model_factory.py         # Factory pattern
-│   ├── 📁 evaluation/               # Framework de evaluación
-│   │   ├── __init__.py
-│   │   ├── evaluator.py            # Evaluador principal
-│   │   ├── benchmark.py            # Sistema de benchmark
-│   │   ├── comparator.py           # Comparación entre modelos
-│   │   └── reporters.py            # Generación de reportes
-│   ├── 📁 metrics/                  # Métricas especializadas
-│   │   ├── __init__.py
-│   │   ├── segmentation_metrics.py # IoU, Dice, etc.
-│   │   ├── photography_metrics.py  # Métricas para fotografía
-│   │   ├── edge_quality.py         # Calidad de bordes
-│   │   └── human_correlation.py    # Correlación con evaluación humana
-│   ├── 📁 vlm_integration/          # Demo VLM
-│   │   ├── __init__.py
-│   │   ├── llava_integration.py    # Integración LLaVA
-│   │   ├── prompt_engineering.py   # Prompts optimizados
-│   │   ├── recommendation_engine.py # Motor de recomendaciones
-│   │   └── demo_interface.py       # Interface del demo
-│   └── 📁 utils/                    # Utilidades
-│       ├── __init__.py
-│       ├── data_loader.py          # Carga de datos
-│       ├── visualization.py        # Visualización
-│       ├── logger.py               # Sistema de logging
-│       ├── config_manager.py       # Gestión de configuraciones
-│       └── gpu_utils.py            # Utilidades GPU
-├── 📁 configs/                      # Configuraciones centralizadas
-│   ├── 📁 models/                   # Configs por modelo
-│   │   ├── maskdino_config.yaml
-│   │   ├── sam2_config.yaml
-│   │   ├── bodypix_config.yaml
-│   │   └── yolov8_config.yaml
-│   ├── 📁 experiments/              # Configs de experimentos
-│   │   ├── benchmark_full.yaml     # Benchmark completo
-│   │   ├── quick_test.yaml         # Test rápido
-│   │   └── ablation_study.yaml     # Estudios de ablación
-│   └── main_config.yaml            # Configuración principal
-├── 📁 data/
-│   ├── 📁 raw/                      # Imágenes originales
-│   │   ├── 📁 portraits/           # Retratos
-│   │   ├── 📁 outdoor/             # Exteriores
-│   │   ├── 📁 group_photos/        # Fotos grupales
-│   │   └── 📁 challenging/         # Casos difíciles
-│   ├── 📁 processed/                # Datos procesados
-│   │   ├── 📁 resized/             # Imágenes redimensionadas
-│   │   ├── 📁 normalized/          # Normalizadas
-│   │   └── 📁 augmented/           # Data augmentation
-│   ├── 📁 annotations/              # Ground truth
-│   │   ├── 📁 masks/               # Máscaras de segmentación
-│   │   ├── 📁 bboxes/              # Bounding boxes
-│   │   └── metadata.json          # Metadatos de imágenes
-│   └── dataset_info.yaml           # Información del dataset
-├── 📁 experiments/                  # Resultados de experimentos
-│   ├── 📁 maskdino/                # Resultados MaskDINO
-│   │   ├── 📁 2025-06-15_run1/     # Experimento específico
-│   │   └── 📁 2025-06-16_run2/
-│   ├── 📁 sam2/                    # Resultados SAM 2.0
-│   ├── 📁 bodypix/                 # Resultados BodyPix
-│   ├── 📁 yolov8/                  # Resultados YOLOv8
-│   └── 📁 comparative/             # Análisis comparativos
-│       ├── 📁 speed_comparison/
-│       ├── 📁 accuracy_comparison/
-│       └── 📁 final_benchmark/
-├── 📁 notebooks/                    # Jupyter notebooks
-│   ├── 📁 exploration/             # Exploración de datos
-│   │   ├── 01_data_exploration.ipynb
-│   │   └── 02_image_analysis.ipynb
-│   ├── 📁 model_testing/           # Testing de modelos
-│   │   ├── 01_maskdino_test.ipynb
-│   │   ├── 02_sam2_test.ipynb
-│   │   ├── 03_bodypix_test.ipynb
-│   │   └── 04_yolov8_test.ipynb
-│   ├── 📁 evaluation/              # Análisis de resultados
-│   │   ├── 01_metrics_analysis.ipynb
-│   │   ├── 02_comparative_analysis.ipynb
-│   │   └── 03_visualization.ipynb
-│   └── 📁 vlm_demo/               # Demo VLM
-│       └── 01_llava_integration.ipynb
-├── 📁 scripts/                      # Scripts de automatización
-│   ├── setup_models.py            # Setup automático de modelos
-│   ├── run_benchmark.py           # Ejecutar benchmark
-│   ├── download_data.py           # Descargar datasets
-│   ├── process_results.py         # Procesar resultados
-│   └── generate_report.py         # Generar reporte final
-├── 📁 tests/                       # Tests unitarios
-│   ├── 📁 unit/                    # Tests unitarios
-│   ├── 📁 integration/             # Tests de integración
-│   └── 📁 performance/             # Tests de rendimiento
-├── 📁 docs/                        # Documentación
-│   ├── 📁 setup/                   # Guías de instalación
-│   ├── 📁 models/                  # Documentación de modelos
-│   ├── 📁 api/                     # Documentación API
-│   └── methodology.md             # Metodología del TFM
-├── 📁 requirements/                # Gestión de dependencias
-│   ├── base.txt                   # Dependencias base
-│   ├── maskdino.txt              # Específicas MaskDINO
-│   ├── sam2.txt                  # Específicas SAM 2.0
-│   ├── bodypix.txt               # Específicas BodyPix
-│   ├── yolov8.txt                # Específicas YOLOv8
-│   ├── llava.txt                 # Específicas LLaVA
-│   ├── dev.txt                   # Desarrollo
-│   └── gpu.txt                   # GPU/CUDA
-├── 📁 docker/                      # Containerización
-│   ├── Dockerfile.base           # Base image
-│   ├── Dockerfile.maskdino       # MaskDINO specific
-│   ├── Dockerfile.gpu            # GPU version
-│   └── docker-compose.yml        # Orquestación
-├── .gitignore                      # Git ignore
-├── .pre-commit-config.yaml        # Pre-commit hooks
-├── pyproject.toml                 # Configuración del proyecto
-├── setup.py                       # Instalación del paquete
-└── README.md                      # Documentación principal
+tfm_uoc_datascience/
+├── 00_CVAT_Ground_Truth.ipynb          # Procesamiento de anotaciones CVAT
+├── 00_ExtraerCaracteristicas.ipynb     # Extracción de características fotográficas
+├── 01_mask2former_evaluador.ipynb      # Evaluador Mask2Former
+├── 01_oneformer_evaluador.ipynb        # Evaluador OneFormer
+├── 02_sam_evaluador.ipynb              # Evaluador SAM 2.0 (modo automático)
+├── 02_sam2_evaluados_prompt.ipynb      # Evaluador SAM 2.0 (modo prompts)
+├── 03_yolo_evaluador.ipynb             # Evaluador YOLOv8-seg
+├── 04_bodypix_evaluador.ipynb          # Evaluador BodyPix
+├── 03_Analisis_Fase_1.ipynb            # Análisis exploratorio inicial
+├── 03_Analisis_Fase_2A.ipynb           # Validación y limpieza de datos
+├── 03_Analisis_Fase_2B.ipynb           # Estadísticas descriptivas
+├── 03_Analisis_Fase_2C.ipynb           # Análisis de varianza (ANOVA)
+├── 03_Analisis_Fase_2D.ipynb           # Correlaciones fotográficas
+├── 03_Analisis_Fase_2E_*.ipynb         # Generación de visualizaciones (4 bloques)
+├── 03_Analisis_Fase_2G.ipynb           # Síntesis y recomendaciones
+├── 04_VLM_Prompt_Fotografia.ipynb      # Sistema de mentoría VLM
+├── 04_VLM_setup_validacion.ipynb       # Validación de integración VLM
+├── 99_GenerarVisualizacionesPDF.ipynb  # Exportación de figuras
+├── 99_Utilidades_Conversion.ipynb      # Utilidades de conversión de formatos
+└── src/models/                         # Módulos auxiliares
 ```
 
+---
+
+## Modelos Evaluados
+
+### YOLOv8-seg
+- **Variantes:** nano, small, medium, large, xlarge
+- **Configuraciones:** 4 perfiles de sensibilidad (fast, balanced, sensitive, quality)
+- **Total:** 20 configuraciones
+- **Resultado:** Líder absoluto con IoU = 0.9498 y mínima variabilidad
+
+### OneFormer
+- **Backbones:** Swin-Large (COCO, ADE20K), Swin-Tiny (ADE20K)
+- **Tareas:** semantic, instance, panoptic
+- **Total:** 36 configuraciones
+- **Resultado:** Configuraciones semantic alcanzan IoU = 0.9674 (máximo del estudio)
+
+### Mask2Former
+- **Backbones:** Swin-Large, Swin-Base, Swin-Tiny
+- **Datasets:** COCO instance, ADE20K semantic
+- **Total:** 67 configuraciones
+- **Resultado:** Solo ADE20K semantic funcional; COCO instance presenta fallos sistemáticos
+
+### SAM 2.0
+- **Variantes:** Tiny, Small, Base-Plus, Large
+- **Modos:** Automático (3 configs) y Prompts (4 estrategias)
+- **Total:** 28 configuraciones
+- **Resultado:** Modo prompts con saliencia alcanza IoU = 0.74; modo automático inadecuado
+
+### BodyPix
+- **Variantes:** MobileNetV1 0.50, MobileNetV1 0.75
+- **Configuraciones:** 4 niveles de sensibilidad × 3 umbrales
+- **Total:** 24 configuraciones
+- **Resultado:** IoU = 0.66, viable para aplicaciones con recursos limitados
+
+---
+
+## Sistema de Mentoría VLM
+
+El sistema integra análisis multimodal mediante Gemini 2.5 Flash:
+
+**Entradas:**
+- Métricas del archivo RAW (brillo, contraste, saturación, nitidez, SNR)
+- Métricas de segmentación (IoU, Boundary IoU, Precision, Recall)
+- Métricas de composición (posición del sujeto, espacio negativo, saliencia)
+- Imagen editada con overlay de máscara de segmentación
+
+**Salidas (formato JSON):**
+- Evaluación de decisiones de edición
+- Fortalezas detectadas con métricas de soporte
+- Máximo 3 recomendaciones priorizadas con valores numéricos concretos
+- Sugerencias de fondo basadas en teoría del color (códigos hexadecimales)
+
+---
+
+## Requisitos Técnicos
+
+### Entorno de Ejecución
+- Google Colab (GPU T4, 16GB VRAM)
+- Python 3.8+
+
+### Dependencias Principales
+```
+torch>=2.0
+transformers>=4.30
+ultralytics>=8.0
+opencv-python>=4.8
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+matplotlib>=3.7
+seaborn>=0.12
+shapely>=2.0
+mahotas>=1.4
+```
+
+### APIs Externas
+- Google Gemini API (para componente VLM)
+
+---
+
+## Reproducibilidad
+
+### Estructura de Datos en Google Drive
+```
+/TFM/
+├── dataset/
+│   ├── fotos_editadas/           # 20 fotografías de evaluación
+│   └── ground_truth/             # Máscaras anotadas manualmente
+├── resultados/
+│   ├── mask2former/              # Predicciones por configuración
+│   ├── oneformer/
+│   ├── sam2_auto/
+│   ├── sam2_prompts/
+│   ├── yolov8/
+│   └── bodypix/
+├── analisis/
+│   ├── metricas_fusionadas.csv   # Dataset consolidado (235 columnas)
+│   └── visualizaciones/          # Figuras generadas
+└── caracteristicas/
+    └── caracteristicas_raw.csv   # 148 características fotográficas
+```
+
+### Ejecución Secuencial
+1. `00_CVAT_Ground_Truth.ipynb` - Procesar anotaciones
+2. `00_ExtraerCaracteristicas.ipynb` - Extraer características RAW
+3. `0X_*_evaluador.ipynb` - Ejecutar cada modelo
+4. `03_Analisis_Fase_*.ipynb` - Análisis estadístico
+5. `04_VLM_*.ipynb` - Sistema de mentoría
+
+---
+
+## Resultados Clave
+
+### Conclusiones Principales
+
+1. **YOLOv8-seg es la opción óptima** para segmentación de personas en fotografía de retrato, combinando máxima precisión (IoU = 0.95) con mínima variabilidad y alta eficiencia computacional.
+
+2. **El rendimiento en benchmarks genéricos no predice el rendimiento en dominios especializados.** Mask2Former y SAM 2.0, líderes en COCO, presentaron limitaciones significativas en fotografía de retrato.
+
+3. **Las intuiciones fotográficas no siempre se confirman:**
+   - El bokeh no mejora la segmentación (IoU fondo nítido: 0.746 vs bokeh: 0.664)
+   - Los fondos complejos no la dificultan (complejo: 0.707 vs simple: 0.651)
+   - El alto contraste la perjudica (bajo: 0.715 vs alto: 0.630)
+   - La nitidez es el único predictor consistente (d = 0.30)
+
+4. **Los modelos fundacionales requieren conocimiento de dominio** para competir con modelos especializados.
+
+### Recomendaciones por Escenario
+
+| Escenario | Modelo Recomendado | Justificación |
+|-----------|-------------------|---------------|
+| Producción con volumen alto | YOLOv8 nano/small | 18-25 ms, IoU > 0.94 |
+| Edición individual máxima calidad | OneFormer COCO semantic | IoU = 0.967 |
+| Aplicación web/móvil tiempo real | YOLOv8 nano | 18 ms, 60 MB GPU |
+| Pipeline híbrido casos complejos | YOLOv8 → SAM2 prompts | Detección + refinamiento |
+| Recursos computacionales mínimos | YOLOv8 nano | Viable en CPU |
+
+---
+
+## Trabajo Futuro
+
+- **Pipeline híbrido YOLOv8→SAM2:** Evaluación cuantitativa de refinamiento de bordes
+- **Generación de fondos basada en colorimetría:** Integración con modelos generativos
+- **Extensión a otros dominios fotográficos:** Producto, arquitectura, fauna
+- **Validación de recomendaciones VLM:** Estudios con usuarios reales
+
+---
+
+## Citación
+```bibtex
+@mastersthesis{levanolevano2025segmentacion,
+  author  = {Lévano Lévano, Jesús A.},
+  title   = {Evaluación comparativa de técnicas de segmentación para fotografía 
+             de personas con generación automática de recomendaciones vía VLM},
+  school  = {Universitat Oberta de Catalunya},
+  year    = {2025},
+  type    = {Trabajo de Fin de Máster},
+  address = {Barcelona, España}
+}
+```
+
+---
+
+## Licencia
+
+Este trabajo está sujeto a una licencia [Creative Commons Reconocimiento-NoComercial-SinObraDerivada 3.0 España](http://creativecommons.org/licenses/by-nc-nd/3.0/es/).
+
+---
+
+## Contacto
+
+Para consultas sobre este trabajo, contactar a través del repositorio de GitHub.
+
+**Nota:** Por restricciones de derechos de imagen, no se incluyen las fotografías originales en alta resolución.
