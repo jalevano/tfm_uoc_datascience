@@ -1,220 +1,283 @@
 # Evaluación Comparativa de Técnicas de Segmentación para Fotografía de Personas con Generación Automática de Recomendaciones vía VLM
 
-**Trabajo de Fin de Máster - Máster en Ciencia de Datos**  
-**Universitat Oberta de Catalunya (UOC)**  
-**Diciembre 2025**
+[![Python](https://img.shields.io/badge/Python-3.8+-blue.svg)](https://www.python.org/downloads/)
+[![PyTorch](https://img.shields.io/badge/PyTorch-2.0+-red.svg)](https://pytorch.org/)
+[![License](https://img.shields.io/badge/License-CC%20BY--NC--ND%203.0-lightgrey.svg)](http://creativecommons.org/licenses/by-nc-nd/3.0/es/)
+[![UOC](https://img.shields.io/badge/UOC-Máster%20Data%20Science-green.svg)](https://www.uoc.edu/)
 
-**Autor:** Jesus Levano.  
+## Información del Proyecto
+
+| Campo | Descripción |
+|-------|-------------|
+| **Título** | Evaluación comparativa de técnicas de segmentación para fotografía de personas con generación automática de recomendaciones vía VLM |
+| **Autor** | Jesús L. |
+| **Titulación** | Máster en Ciencia de Datos |
+| **Universidad** | Universitat Oberta de Catalunya (UOC) |
+| **Fecha** | Diciembre 2025 |
+
 ---
 
 ## Resumen
 
-Este trabajo presenta una evaluación comparativa de cinco modelos de segmentación de instancias aplicados a fotografía de retrato profesional: YOLOv8-seg, Mask2Former, OneFormer, SAM 2.0 y BodyPix. La evaluación se realizó íntegramente en Google Colab gratuito, demostrando la viabilidad de investigación rigurosa con recursos accesibles.
+Este trabajo presenta una evaluación comparativa de técnicas avanzadas para la segmentación de personas en fotografías, analizando cinco modelos representativos de paradigmas arquitectónicos diversos: **SAM 2.0**, **Mask2Former**, **OneFormer**, **YOLOv8-seg** y **BodyPix**, en el contexto específico de fotografía de retrato profesional.
 
-Se evaluaron 143 configuraciones sobre 20 fotografías de retrato anotadas manualmente, generando 2.860 evaluaciones totales con 2.338 resultados válidos (81.7%). El análisis incluye métricas estándar (IoU, Dice), descriptores geométricos (Shapely), análisis textural (Haralick) y validación estadística (ANOVA, η², d de Cohen).
+La metodología consiste en la evaluación independiente de los cinco modelos sobre un dataset de 20 fotografías de retrato anotadas manualmente, aplicando métricas especializadas como IoU y Dice Coefficient, complementadas con análisis geométrico mediante descriptores de Shapely y Mahotas.
 
-Como componente innovador, se implementó un sistema de mentoría fotográfica mediante Vision Language Model (Gemini 2.5 Flash) que analiza metadatos RAW junto con resultados de segmentación para generar recomendaciones técnicas específicas con valores cuantificados.
+### Hallazgos Principales
+
+- **YOLOv8-seg** emerge como líder con IoU medio de **0.9498** y la menor variabilidad del estudio
+- La elección del modelo explica el **40.6%** de la varianza en rendimiento (η²=0.4057)
+- Los modelos fundacionales (SAM2) requieren guía de dominio para competir con modelos especializados
+- Las intuiciones fotográficas sobre bokeh y complejidad de fondo no se confirman empíricamente
 
 ---
 
-## Hallazgos Principales
+## Resultados Visuales por Modelo
 
-| Modelo | IoU Medio | Desv. Típica | Tiempo (ms) | Observaciones |
-|--------|-----------|--------------|-------------|---------------|
-| **YOLOv8-seg** | **0.9498** | 0.053 | 80 | Líder en precisión y consistencia |
-| OneFormer | 0.8873 | 0.207 | 168 | Configuraciones semantic óptimas |
-| Mask2Former | 0.7401 | 0.349 | 168 | Solo ADE20K semantic funcional |
-| BodyPix | 0.6559 | 0.174 | Variable | Viable para recursos limitados |
-| SAM2 (Prompts) | 0.4614 | 0.375 | 3,075 | Requiere guía de dominio |
-| SAM2 (Auto) | 0.3077 | 0.357 | 3,075 | Rendimiento insuficiente |
+Las siguientes visualizaciones muestran el rendimiento comparativo de cada modelo evaluado sobre fotografías representativas del dataset.
 
-**Hallazgo estadístico:** La elección del modelo explica el 40.6% de la varianza en IoU (η² = 0.4057, p < 0.001).
+### YOLOv8-seg (Mejor Rendimiento Global)
+
+<p align="center">
+  <img src="docs/images/_DSC0143_umbral0_3.png" alt="YOLOv8 Large Segmentation" width="800"/>
+</p>
+
+**Configuración:** YOLOv8 Large | conf≥0.3 | 1 persona detectada (conf=0.92)
+
+YOLOv8-seg alcanza el mejor rendimiento del estudio con IoU=0.9498 y desviación típica de 0.053, demostrando precisión elevada y consistencia excepcional independientemente de la configuración seleccionada.
+
+---
+
+### OneFormer (ADE20K Semantic)
+
+<p align="center">
+  <img src="docs/images/_DSC0023.png" alt="OneFormer ADE20K Swin-Tiny Semantic" width="800"/>
+</p>
+
+**Configuración:** ADE20K | Swin-Tiny | semantic | t=0.75
+
+OneFormer con configuración semántica produce máscaras limpias y bien definidas. Las configuraciones semantic alcanzan IoU=0.9674, superando marginalmente a YOLOv8 en casos individuales, aunque con mayor variabilidad global.
+
+---
+
+### Mask2Former (ADE20K Semantic)
+
+<p align="center">
+  <img src="docs/images/_DSC0147_20251020_221040.png" alt="Mask2Former Large ADE Semantic" width="800"/>
+</p>
+
+**Configuración:** large_ade | baja_sensibilidad | conf=1.00
+
+Mask2Former con ADE20K semantic alcanza IoU=0.954, siendo la única configuración funcional de este modelo. Las variantes COCO instance presentaron fallos sistemáticos debido a la arquitectura multi-query.
+
+---
+
+### SAM 2.0 con Prompts de Saliencia
+
+<p align="center">
+  <img src="docs/images/_DSC0411_20251029_212141.png" alt="SAM2 Hiera Tiny con Saliency Prompts" width="800"/>
+</p>
+
+**Configuración:** sam2_hiera_tiny | saliency_moderate | 2 personas detectadas
+
+SAM2 con estrategias de prompting basadas en saliencia visual alcanza IoU=0.74, mejorando significativamente respecto al modo automático (IoU=0.31). La elección de estrategia de prompting es crítica (η²=0.231).
+
+---
+
+### SAM 2.0 Automático (Sobre-segmentación)
+
+<p align="center">
+  <img src="docs/images/_DSC0084.png" alt="SAM2 Tiny Quality - Sobresegmentación" width="800"/>
+</p>
+
+**Configuración:** TINY-quality | 11 máscaras generadas | 7 clasificadas como "personas"
+
+El modo automático de SAM2 ilustra el problema de sobre-segmentación: sin guía de dominio, el modelo fragmenta la imagen en múltiples regiones sin priorizar el sujeto humano. Mediana de IoU=0.017 indica que más del 50% de evaluaciones produjeron segmentaciones prácticamente nulas.
+
+---
+
+### BodyPix (Limitaciones de Arquitectura Web)
+
+<p align="center">
+  <img src="docs/images/_DSC0987_20251116_172755.png" alt="BodyPix MobileNetV1 0.75" width="800"/>
+</p>
+
+**Configuración:** mobilenet_v1_075 | baja_sensibilidad | T=0.5 | Área persona: 39.7%
+
+BodyPix presenta fragmentación visible en la máscara debido a las limitaciones de resolución interna de MobileNetV1. Con IoU medio de 0.6559, demuestra que la simplicidad arquitectónica tiene un coste en precisión, aunque mantiene consistencia predecible.
+
+---
+
+## Resultados Cuantitativos
+
+### Ranking de Modelos por IoU
+
+| Modelo | IoU Medio | Desv. Típica | Mediana | Tiempo (ms) |
+|--------|-----------|--------------|---------|-------------|
+| **YOLOv8-seg** | 0.9498 | 0.053 | 0.955 | 80 |
+| OneFormer | 0.8873 | 0.207 | 0.964 | 3,200 |
+| Mask2Former | 0.7401 | 0.349 | 0.953 | 168 |
+| BodyPix | 0.6559 | 0.174 | 0.673 | ~50 |
+| SAM2 (prompts) | 0.4614 | 0.375 | 0.459 | 1,200 |
+| SAM2 (auto) | 0.3077 | 0.360 | 0.017 | 3,075 |
+
+### Configuraciones TOP-10 por IoU
+
+| Rank | Modelo | Configuración | IoU |
+|------|--------|---------------|-----|
+| 1 | OneFormer | COCO_swin_semantic_t0.40 | 0.9674 |
+| 2 | OneFormer | COCO_swin_semantic_t0.60 | 0.9674 |
+| 3 | OneFormer | COCO_swin_semantic_t0.75 | 0.9674 |
+| 4 | OneFormer | COCO_swin_semantic_t0.85 | 0.9674 |
+| 5 | OneFormer | ADE20K_swin_semantic_t0.40 | 0.9643 |
+| 6 | OneFormer | ADE20K_swin_panoptic_t0.40 | 0.9644 |
+| 7 | YOLOv8 | xlarge_balanced | 0.9567 |
+| 8 | YOLOv8 | xlarge_fast | 0.9567 |
+| 9 | YOLOv8 | medium_balanced | 0.9553 |
+| 10 | Mask2Former | large_ade_semantic | 0.9540 |
+
+---
+
+## Acceso a Datos y Resultados
+
+### Repositorio de Datos (Google Drive)
+
+Los resultados completos de evaluación, máscaras de segmentación y visualizaciones están disponibles en:
+
+**[Acceder a Resultados Completos (Google Drive)](https://drive.google.com/drive/folders/1wTIxvuOvCWIxrBfbmA8ZqBv4L3W3DFGJ?usp=drive_link)**
+
+> **Nota sobre acceso:** Durante el período de evaluación del TFM (hasta resolución académica), el acceso está restringido a usuarios con cuenta **@uoc.edu**. Una vez finalizado el proceso de evaluación, el enlace se abrirá al público general para facilitar la reproducibilidad de la investigación.
 
 ---
 
 ## Estructura del Repositorio
+
 ```
 tfm_uoc_datascience/
-├── 00_CVAT_Ground_Truth.ipynb          # Procesamiento de anotaciones CVAT
-├── 00_ExtraerCaracteristicas.ipynb     # Extracción de características fotográficas
-├── 01_mask2former_evaluador.ipynb      # Evaluador Mask2Former
-├── 01_oneformer_evaluador.ipynb        # Evaluador OneFormer
-├── 02_sam_evaluador.ipynb              # Evaluador SAM 2.0 (modo automático)
-├── 02_sam2_evaluados_prompt.ipynb      # Evaluador SAM 2.0 (modo prompts)
-├── 03_yolo_evaluador.ipynb             # Evaluador YOLOv8-seg
-├── 04_bodypix_evaluador.ipynb          # Evaluador BodyPix
-├── 03_Analisis_Fase_1.ipynb            # Análisis exploratorio inicial
-├── 03_Analisis_Fase_2A.ipynb           # Validación y limpieza de datos
-├── 03_Analisis_Fase_2B.ipynb           # Estadísticas descriptivas
-├── 03_Analisis_Fase_2C.ipynb           # Análisis de varianza (ANOVA)
-├── 03_Analisis_Fase_2D.ipynb           # Correlaciones fotográficas
-├── 03_Analisis_Fase_2E_*.ipynb         # Generación de visualizaciones (4 bloques)
-├── 03_Analisis_Fase_2G.ipynb           # Síntesis y recomendaciones
-├── 04_VLM_Prompt_Fotografia.ipynb      # Sistema de mentoría VLM
-├── 04_VLM_setup_validacion.ipynb       # Validación de integración VLM
-├── 99_GenerarVisualizacionesPDF.ipynb  # Exportación de figuras
-├── 99_Utilidades_Conversion.ipynb      # Utilidades de conversión de formatos
-└── src/models/                         # Módulos auxiliares
+│
+├── 00_CVAT_Ground_Truth.ipynb           # Procesamiento de anotaciones CVAT
+├── 00_ExtraerCaracteristicas.ipynb      # Extracción de características fotográficas
+│
+├── 01_mask2former_evaluador.ipynb       # Evaluador Mask2Former
+├── 01_oneformer_evaluador.ipynb         # Evaluador OneFormer
+├── 02_sam_evaluador.ipynb               # Evaluador SAM2 automático
+├── 02_sam2_evaluados_prompt.ipynb       # Evaluador SAM2 con prompts
+├── 03_yolo_evaluador.ipynb              # Evaluador YOLOv8-seg
+├── 04_bodypix_evaluador.ipynb           # Evaluador BodyPix
+│
+├── 03_Analisis_Fase_1.ipynb             # Análisis exploratorio inicial
+├── 03_Analisis_Fase_2A.ipynb            # Ranking y estadísticas descriptivas
+├── 03_Analisis_Fase_2B.ipynb            # ANOVA y tamaños de efecto
+├── 03_Analisis_Fase_2C.ipynb            # Análisis por modelo
+├── 03_Analisis_Fase_2D.ipynb            # Correlaciones fotográficas
+├── 03_Analisis_Fase_2E_*.ipynb          # Visualizaciones (Bloques 1-4)
+├── 03_Analisis_Fase_2G.ipynb            # Síntesis comparativa
+│
+├── 04_VLM_setup_validacion.ipynb        # Configuración API Gemini
+├── 04_VLM_Prompt_Fotografia.ipynb       # Sistema de mentoría VLM
+│
+├── 99_GenerarVisualizacionesPDF.ipynb   # Generación de figuras
+├── 99_Utilidades_Conversion.ipynb       # Utilidades de conversión
+│
+├── docs/
+│   └── images/                          # Imágenes para README
+│
+├── src/
+│   └── models/                          # Código fuente de modelos
+│
+└── README.md                            # Este archivo
 ```
-
----
-
-## Modelos Evaluados
-
-### YOLOv8-seg
-- **Variantes:** nano, small, medium, large, xlarge
-- **Configuraciones:** 4 perfiles de sensibilidad (fast, balanced, sensitive, quality)
-- **Total:** 20 configuraciones
-- **Resultado:** Líder absoluto con IoU = 0.9498 y mínima variabilidad
-
-### OneFormer
-- **Backbones:** Swin-Large (COCO, ADE20K), Swin-Tiny (ADE20K)
-- **Tareas:** semantic, instance, panoptic
-- **Total:** 36 configuraciones
-- **Resultado:** Configuraciones semantic alcanzan IoU = 0.9674 (máximo del estudio)
-
-### Mask2Former
-- **Backbones:** Swin-Large, Swin-Base, Swin-Tiny
-- **Datasets:** COCO instance, ADE20K semantic
-- **Total:** 67 configuraciones
-- **Resultado:** Solo ADE20K semantic funcional; COCO instance presenta fallos sistemáticos
-
-### SAM 2.0
-- **Variantes:** Tiny, Small, Base-Plus, Large
-- **Modos:** Automático (3 configs) y Prompts (4 estrategias)
-- **Total:** 28 configuraciones
-- **Resultado:** Modo prompts con saliencia alcanza IoU = 0.74; modo automático inadecuado
-
-### BodyPix
-- **Variantes:** MobileNetV1 0.50, MobileNetV1 0.75
-- **Configuraciones:** 4 niveles de sensibilidad × 3 umbrales
-- **Total:** 24 configuraciones
-- **Resultado:** IoU = 0.66, viable para aplicaciones con recursos limitados
-
----
-
-## Sistema de Mentoría VLM
-
-El sistema integra análisis multimodal mediante Gemini 2.5 Flash:
-
-**Entradas:**
-- Métricas del archivo RAW (brillo, contraste, saturación, nitidez, SNR)
-- Métricas de segmentación (IoU, Boundary IoU, Precision, Recall)
-- Métricas de composición (posición del sujeto, espacio negativo, saliencia)
-- Imagen editada con overlay de máscara de segmentación
-
-**Salidas (formato JSON):**
-- Evaluación de decisiones de edición
-- Fortalezas detectadas con métricas de soporte
-- Máximo 3 recomendaciones priorizadas con valores numéricos concretos
-- Sugerencias de fondo basadas en teoría del color (códigos hexadecimales)
 
 ---
 
 ## Requisitos Técnicos
 
 ### Entorno de Ejecución
-- Google Colab (GPU T4, 16GB VRAM)
-- Python 3.8+
+
+- **Plataforma:** Google Colab (gratuito)
+- **GPU:** Tesla T4 (16GB VRAM)
+- **Python:** 3.8+
+- **Sesiones:** ~12 horas máximo
 
 ### Dependencias Principales
-```
-torch>=2.0
-transformers>=4.30
-ultralytics>=8.0
-opencv-python>=4.8
-numpy>=1.24
-pandas>=2.0
-scipy>=1.10
-matplotlib>=3.7
-seaborn>=0.12
-shapely>=2.0
-mahotas>=1.4
-```
 
-### APIs Externas
-- Google Gemini API (para componente VLM)
+```python
+# Deep Learning
+torch>=2.0.0
+torchvision>=0.15.0
+transformers>=4.30.0
+
+# Modelos específicos
+ultralytics>=8.0.0          # YOLOv8
+segment-anything-2          # SAM 2.0
+tf-bodypix                  # BodyPix
+
+# Análisis y visualización
+numpy>=1.24.0
+pandas>=2.0.0
+scipy>=1.10.0
+matplotlib>=3.7.0
+seaborn>=0.12.0
+
+# Métricas geométricas
+shapely>=2.0.0
+mahotas>=1.4.0
+opencv-python>=4.7.0
+```
 
 ---
 
 ## Reproducibilidad
 
-### Estructura de Datos en Google Drive
-```
-/TFM/
-├── dataset/
-│   ├── fotos_editadas/           # 20 fotografías de evaluación
-│   └── ground_truth/             # Máscaras anotadas manualmente
-├── resultados/
-│   ├── mask2former/              # Predicciones por configuración
-│   ├── oneformer/
-│   ├── sam2_auto/
-│   ├── sam2_prompts/
-│   ├── yolov8/
-│   └── bodypix/
-├── analisis/
-│   ├── metricas_fusionadas.csv   # Dataset consolidado (235 columnas)
-│   └── visualizaciones/          # Figuras generadas
-└── caracteristicas/
-    └── caracteristicas_raw.csv   # 148 características fotográficas
-```
+### Ejecución Secuencial Recomendada
 
-### Ejecución Secuencial
-1. `00_CVAT_Ground_Truth.ipynb` - Procesar anotaciones
-2. `00_ExtraerCaracteristicas.ipynb` - Extraer características RAW
-3. `0X_*_evaluador.ipynb` - Ejecutar cada modelo
-4. `03_Analisis_Fase_*.ipynb` - Análisis estadístico
-5. `04_VLM_*.ipynb` - Sistema de mentoría
+1. **Preparación de datos:**
+   ```
+   00_CVAT_Ground_Truth.ipynb → 00_ExtraerCaracteristicas.ipynb
+   ```
 
----
+2. **Evaluación de modelos:**
+   ```
+   01_mask2former_evaluador.ipynb
+   01_oneformer_evaluador.ipynb
+   02_sam_evaluador.ipynb
+   02_sam2_evaluados_prompt.ipynb
+   03_yolo_evaluador.ipynb
+   04_bodypix_evaluador.ipynb
+   ```
 
-## Resultados Clave
+3. **Análisis estadístico:**
+   ```
+   03_Analisis_Fase_1.ipynb → 03_Analisis_Fase_2A.ipynb → ... → 03_Analisis_Fase_2G.ipynb
+   ```
 
-### Conclusiones Principales
+4. **Sistema VLM:**
+   ```
+   04_VLM_setup_validacion.ipynb → 04_VLM_Prompt_Fotografia.ipynb
+   ```
 
-1. **YOLOv8-seg es la opción óptima** para segmentación de personas en fotografía de retrato, combinando máxima precisión (IoU = 0.95) con mínima variabilidad y alta eficiencia computacional.
+### Notas de Reproducibilidad
 
-2. **El rendimiento en benchmarks genéricos no predice el rendimiento en dominios especializados.** Mask2Former y SAM 2.0, líderes en COCO, presentaron limitaciones significativas en fotografía de retrato.
-
-3. **Las intuiciones fotográficas no siempre se confirman:**
-   - El bokeh no mejora la segmentación (IoU fondo nítido: 0.746 vs bokeh: 0.664)
-   - Los fondos complejos no la dificultan (complejo: 0.707 vs simple: 0.651)
-   - El alto contraste la perjudica (bajo: 0.715 vs alto: 0.630)
-   - La nitidez es el único predictor consistente (d = 0.30)
-
-4. **Los modelos fundacionales requieren conocimiento de dominio** para competir con modelos especializados.
-
-### Recomendaciones por Escenario
-
-| Escenario | Modelo Recomendado | Justificación |
-|-----------|-------------------|---------------|
-| Producción con volumen alto | YOLOv8 nano/small | 18-25 ms, IoU > 0.94 |
-| Edición individual máxima calidad | OneFormer COCO semantic | IoU = 0.967 |
-| Aplicación web/móvil tiempo real | YOLOv8 nano | 18 ms, 60 MB GPU |
-| Pipeline híbrido casos complejos | YOLOv8 → SAM2 prompts | Detección + refinamiento |
-| Recursos computacionales mínimos | YOLOv8 nano | Viable en CPU |
-
----
-
-## Trabajo Futuro
-
-- **Pipeline híbrido YOLOv8→SAM2:** Evaluación cuantitativa de refinamiento de bordes
-- **Generación de fondos basada en colorimetría:** Integración con modelos generativos
-- **Extensión a otros dominios fotográficos:** Producto, arquitectura, fauna
-- **Validación de recomendaciones VLM:** Estudios con usuarios reales
+- Todos los notebooks incluyen instalación de dependencias al inicio
+- Los checkpoints permiten reanudar ejecución tras desconexiones de Colab
+- Las semillas aleatorias están fijadas para reproducibilidad
+- El dataset de 20 fotografías no se incluye por restricciones de derechos de imagen
 
 ---
 
 ## Citación
+
+Si utilizas este trabajo en tu investigación, por favor cita:
+
 ```bibtex
-@mastersthesis{levanolevano2025segmentacion,
-  author  = {Lévano Lévano, Jesús A.},
-  title   = {Evaluación comparativa de técnicas de segmentación para fotografía 
-             de personas con generación automática de recomendaciones vía VLM},
-  school  = {Universitat Oberta de Catalunya},
-  year    = {2025},
-  type    = {Trabajo de Fin de Máster},
-  address = {Barcelona, España}
+@mastersthesis{jesus2025segmentacion,
+  title={Evaluación comparativa de técnicas de segmentación para fotografía 
+         de personas con generación automática de recomendaciones vía VLM},
+  author={Jesús L.},
+  school={Universitat Oberta de Catalunya},
+  year={2025},
+  type={Trabajo de Fin de Máster},
+  program={Máster en Ciencia de Datos}
 }
 ```
 
@@ -228,6 +291,6 @@ Este trabajo está sujeto a una licencia [Creative Commons Reconocimiento-NoCome
 
 ## Contacto
 
-Para consultas sobre este trabajo, contactar a través del repositorio de GitHub.
-
-**Nota:** Por restricciones de derechos de imagen, no se incluyen las fotografías originales en alta resolución.
+- **Autor:** Jesús L.
+- **Repositorio:** [github.com/jalevano/tfm_uoc_datascience](https://github.com/jalevano/tfm_uoc_datascience)
+- **Universidad:** Universitat Oberta de Catalunya (UOC)
